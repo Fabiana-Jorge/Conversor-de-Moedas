@@ -2,6 +2,7 @@
 
 
 const convertButton = document.querySelector(".convert-button")
+const currencySelect = document.querySelector(".currency-select")
 
 function convertValues(){
 
@@ -9,8 +10,12 @@ function convertValues(){
     const currencyValueToConvert = document.querySelector(".currency-value-to-convert") // valor em real / valor da moeda a ser convertido
     const currencyValueConverted = document.querySelector(".currency-value") // outras moedas
 
+    console.log(currencySelect.value)
+// TODOS OS VALORES CONVERTIDO PARA,  JÁ ESTA SENDO PEGO PELO SELECT E O BUTTON
     const dolarToday = 5.2
-
+    const euroToday = 6.2
+    const libraToday = 7.7
+    const realToday = 5.68
 
     const convertedValue = inputCurrencyValue / dolarToday // o input vai pegar o dolar do dia e converter 
 
