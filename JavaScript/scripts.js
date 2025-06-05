@@ -3,73 +3,51 @@
 
 const convertButton = document.querySelector(".convert-button")
 const currencySelect = document.querySelector(".currency-select")
+const currencyFromSelect = document.querySelector(".currency-from")
+
 
 
 function convertValues() {
+    const inputCurrencyValue = parseFloat(document.querySelector(".input-currency").value.replace(",", "."))
 
-    const inputCurrencyValue = document.querySelector(".input-currency").value
-    const currencyValueToConvert = document.querySelector(".currency-value-to-convert") // valor em real / valor da moeda a ser convertido
-    const currencyValueConverted = document.querySelector(".currency-value") // outras moedas
+    const currencyValueToConvert = document.querySelector(".currency-value-to-convert")
+    const currencyValueConverted = document.querySelector(".currency-value")
 
-    console.log(currencySelect.value)
-    // TODOS OS VALORES CONVERTIDO PARA,  JÁ ESTA SENDO PEGO PELO SELECT E O BUTTON
-    const dolarToday = 5.2
-    const euroToday = 6.2
-    const libraToday = 7.7
-    const realToday = 5.68
 
-    // const convertedValue = inputCurrencyValue / dolarToday // o input vai pegar o dolar do dia e converter 
+    const currencyFromSelect = document.querySelectorAll("select")[0]
+    const moedaOrigem = currencyFromSelect.value
+    const moedaDestino = currencySelect.value
 
-    if (currencySelect.value == "dolar") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD"
-        }).format(inputCurrencyValue / dolarToday)
+    const taxas = {
+        real: { dolar: 1 / 5.2, euro: 1 / 6.2, libra: 1 / 7.7, real: 1 },
+        dolar: { real: 5.2, euro: 5.2 / 6.2, libra: 5.2 / 7.7, dolar: 1 },
+        euro: { real: 6.2, dolar: 6.2 / 5.2, libra: 6.2 / 7.7, euro: 1 },
+        libra: { real: 7.7, dolar: 7.7 / 5.2, euro: 7.7 / 6.2, libra: 1 },
     }
 
+    const taxa = taxas[moedaOrigem][moedaDestino]
+    const valorConvertido = inputCurrencyValue * taxa
 
-
-    if (currencySelect.value == "euro") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR"
-        }).format(inputCurrencyValue / euroToday)
+    // Mostrar valor de origem formatado
+    const moedaFormatadaOrigem = {
+        real: "BRL",
+        dolar: "USD",
+        euro: "EUR",
+        libra: "GBP"
     }
 
-
-
-    if (currencySelect.value == "libra") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP"
-        }).format(inputCurrencyValue / libraToday)
-    }
-
-
-
-    if (currencySelect.value == "real") {
-        currencyValueConverted.innerHTML = new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        }).format(inputCurrencyValue / realToday)
-    }
-
-
-    // abaixo formatar o valor a converter
-
-    currencyValueToConvert.innerHTML = new Intl.NumberFormat("pt-BR", {
+    currencyValueToConvert.innerHTML = new Intl.NumberFormat(undefined, {
         style: "currency",
-        currency: "BRL"
+        currency: moedaFormatadaOrigem[moedaOrigem]
     }).format(inputCurrencyValue)
-    // abaixo formatar o valor convertido
 
-    /* currencyValueConverted.innerHTML = new Intl.NumberFormat("en-US", {
-         style:"currency",
-         currency: "USD"
-     }).format(convertedValue)*/
-
-
+    currencyValueConverted.innerHTML = new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: moedaFormatadaOrigem[moedaDestino]
+    }).format(valorConvertido)
 }
+
+
 
 function changeCurrency() {
     const currencyName = document.getElementById("currency-name")
@@ -96,6 +74,31 @@ function changeCurrency() {
         currencyImage.src = "./assets/brasil 2.png"
     }
 
+
+    const currencyNameFrom = document.getElementById("currency-name-from")
+    const currencyImageFrom = document.querySelector(".currency-img-from")
+
+
+    if (currencyFromSelect.value == "dolar") {
+        currencyNameFrom.innerHTML = "Dólar americano"
+        currencyImageFrom.src = "./assets/estados-unidos (1) 1.png"
+    }
+
+    if (currencyFromSelect.value == "euro") {
+        currencyNameFrom.innerHTML = "Euro"
+        currencyImageFrom.src = "./assets/euro.png"
+    }
+
+    if (currencyFromSelect.value == "libra") {
+        currencyNameFrom.innerHTML = "Libra"
+        currencyImage.src = "./assets/libra 1.png"
+    }
+
+    if (currencyFromSelect.value == "real") {
+        currencyNameFrom.innerHTML = "Real brasileiro"
+        currencyImageFrom.src = "./assets/brasil 2.png"
+    }
+
     convertValues()
 }
 
@@ -104,5 +107,3 @@ currencySelect.addEventListener("change", changeCurrency) //função para mudar 
 convertButton.addEventListener("click", convertValues)
 
 
-//inputCurrencyValue = o valor do input digitado aparece na moeda a converter
-// currencyValueConverted.innerHTML = convertedValue // convertedValue irá mostrar o valor convertido
